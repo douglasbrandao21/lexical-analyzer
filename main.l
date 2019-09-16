@@ -25,17 +25,21 @@
 
 "@"|"#"|"$"|"&"|":"|"?"|"÷"|"π"|"√"|"¶"|"∆"|"%"|"£"|"~" {throwException(yytext); return 0;}
 
-[0-9].[A-Za-z][a-z0-9]* throwException(yytext);
+[0-9].[A-Za-z][a-z0-9]* {throwException(yytext); return 0;}
 
 if|then|begin|end|procedure|function generateToken(yytext);
 
 \"(\\.|[^"\\])*\" generateToken(yytext);
 
+[0-9]+ generateToken(yytext);
+
+[0-9]+"."[0-9]* generateToken(yytext);
+
 [A-Za-z][A-Za-z0-9]* generateToken(yytext);
 
 "int"|"float"|"string"|"array" generateToken(yytext);
 
-"+"|"-"|"*"|"/"|"!="|"++"|"--"|"=="|">="|">"|"<="|"<" generateToken(yytext);
+"+"|"-"|"*"|"/"|"!="|"++"|"--"|"=="|"="|">="|">"|"<="|"<" generateToken(yytext);
 
 "{"|"}"|"("|")"|","|"''"|";"|":" generateToken(yytext);
 
