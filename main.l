@@ -1,38 +1,53 @@
-
+/*==== DECLARATIONS ==========================================================*/
 %{ 
-#include <math.h>
-int count = 0; 
-%} 
-  
-DIGIT [0-9]
-ID [A-Za-z][a-z0-9]*
+  #include <math.h>
+  int count = 0; 
 
-%% 
+  void generateToken(char expression[]) {
+    printf("\nGenerated token: %s\n", expression);
+    printf("Press Enter to ask for another token...\n");
+    getchar();
+  }
 
-{DIGIT}+    { printf("An integer: %s (%d)\n", yytext, atoi( yytext )); }
+  void handleComments() {
+    printf("\n");
+  }
 
-{DIGIT}+"."{DIGIT}*     { printf( "A float: %s (%g)\n", yytext, atof( yytext ) ); }
+  void throwException(char expression[]) {
+    printf("\nUnknown expression: %s\n", expression);
+  }
+%}
 
-if|then|begin|end|procedure|function    { printf( "A keyword: %s\n", yytext ); }
 
-{ID}    { printf("An identifier: %s\n", yytext ); }
+/* ==== TRANSLATION RULES ====================================================*/
+%%
+"/*".*."*/" handleComments();
 
-"int"|float|string|array { printf("Tipo de variável: %s\n", yytext); }
+"@"|"#"|"$"|"&"|":"|"?"|"÷"|"π"|"√"|"¶"|"∆"|"%"|"£"|"~" {throwException(yytext); return 0;}
 
-"+"|"-"|"*"|"/"|"!="|"++"|"--"|"=="|">="|">"|"<="|"<" { printf( "An operator: %s\n", yytext ); }
+[0-9].[A-Za-z][a-z0-9]* throwException(yytext);
 
-"{"|"}"|"("|")"|","|"''" { printf( "An special symbol: %s\n", yytext ); }
+if|then|begin|end|procedure|function generateToken(yytext);
 
-. { printf("Erro: %s\n", yytext); }
+\"(\\.|[^"\\])*\" generateToken(yytext);
 
+[A-Za-z][A-Za-z0-9]* generateToken(yytext);
+
+"int"|"float"|"string"|"array" generateToken(yytext);
+
+"+"|"-"|"*"|"/"|"!="|"++"|"--"|"=="|">="|">"|"<="|"<" generateToken(yytext);
+
+"{"|"}"|"("|")"|","|"''"|";"|":" generateToken(yytext);
 
 \n    {return 0;} 
-%% 
-  
+%%
+
+/* ==== AUXILIARY FUNCTIONS ====================================================*/
 int yywrap(){} 
 int main(){ 
+  
+  printf("Write your code then press ENTER to start to generate your tokens\n");
+  yylex(); 
 
-yylex(); 
-
-return 0; 
-} 
+  return 0; 
+}
