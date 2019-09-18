@@ -16,28 +16,49 @@
   void throwException(char expression[]) {
     printf("\nUnknown expression: %s\n", expression);
   }
+
+  
+  
+
 %}
 
+comments "/*".*."*/"
+
+errorSymbols "@"|"#"|"$"|"&"|":"|"?"|"÷"|"π"|"√"|"¶"|"∆"|"%"|"£"|"~"
+
+variableError [0-9].[A-Za-z][a-z0-9]*
+
+reservedWords if|then|function
+
+strings \"(\\.|[^"\\])*\"
+
+integer [0-9]+
+
+float [0-9]+"."[0-9]+
+
+nameVariables [A-Za-z]*
+
+types [int|float|string|array]
 
 /* ==== TRANSLATION RULES ====================================================*/
 %%
-"/*".*."*/" handleComments();
+{comments} handleComments();
 
-"@"|"#"|"$"|"&"|":"|"?"|"÷"|"π"|"√"|"¶"|"∆"|"%"|"£"|"~" {throwException(yytext); return 0;}
+{errorSymbols} {throwException(yytext); return 0;}
 
-[0-9].[A-Za-z][a-z0-9]* {throwException(yytext); return 0;}
+{variableError} {throwException(yytext); return 0;}
 
-if|then|begin|end|procedure|function generateToken(yytext);
+{reservedWords} generateToken(yytext);
 
-\"(\\.|[^"\\])*\" generateToken(yytext);
+{strings} generateToken(yytext);
 
-[0-9]+ generateToken(yytext);
+{integer} generateToken(yytext);
 
-[0-9]+"."[0-9]* generateToken(yytext);
+{float} generateToken(yytext);
 
-[A-Za-z][A-Za-z0-9]* generateToken(yytext);
+{nameVariables} generateToken(yytext);
 
-"int"|"float"|"string"|"array" generateToken(yytext);
+{types} generateToken(yytext);
 
 "+"|"-"|"*"|"/"|"!="|"++"|"--"|"=="|"="|">="|">"|"<="|"<" generateToken(yytext);
 
