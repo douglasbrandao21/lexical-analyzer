@@ -1,3 +1,4 @@
+/*BubbleSort algorithm*/
 void sort(array vetor, int n) {
   int k, j, aux;
 
@@ -14,7 +15,9 @@ void sort(array vetor, int n) {
 }
 
 int main() {
-  array vector@teste = [1, 4, 5, 6, 9, 2];
+
+  /*Declaration of an vector to be sorted*/
+  array vector = [1, 4, 5, 6, 9, 2];
 
   sort(vector);
 
