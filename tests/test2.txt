@@ -14,7 +14,7 @@ void sort(array vetor, int n) {
 }
 
 int main() {
-  array vector = [1, 4, 5, 6, 9, 2];
+  array vector@teste = [1, 4, 5, 6, 9, 2];
 
   sort(vector);
 
