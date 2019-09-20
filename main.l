@@ -18,7 +18,7 @@
 commentsExpression "/*".*."*/"
 
 /*The regular expression used to get illegal symbols of the input*/
-illegalSymbolsExpression "@"|"#"|"$"|"?"|"÷"|"π"|"√"|"¶"|"∆"|"£"|"~"
+illegalSymbolsExpression "@"|"#"|"$"|"?"|"÷"|"π"|"√"|"¶"|"∆"|"£"|"~"|"_"|"`"|"´"
 
 /*The regular expression used to get llegal variable declaration*/
 /*Example? int 1a*/
